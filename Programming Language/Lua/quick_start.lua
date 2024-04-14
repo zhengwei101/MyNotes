@@ -40,9 +40,9 @@ print(name4)
 
 local str = tostring(456)
 local num = tonumber("789")
-local failed = tonumber("123abc") -- nil
+local failed = tonumber("123abc") -- nil，转换失败，返回nil
 
-local length = #str
+local length = #str --返回str的长度
 
 -- function
 print("--------------------------------- function")
@@ -94,7 +94,7 @@ print(person["pap"]) -- nil
 
 -- 全局表
 print("--------------------------------- _G")
-print(_G)
+print(_G) -- lua中所有全局变量都放在全局表_G中
 
 global_variable = "global_variable"
 local local_variable = "local_variable"
