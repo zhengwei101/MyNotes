@@ -7,7 +7,7 @@ a = 1       -- global variable
 local b = 2 -- local variable
 c, d, e, f, g = 3, 4, 5, 6 -- structure binding
 
-print(g, h) -- nil
+print(g, h) -- nil nil
 
 -- type: number
 a = 0x1A
@@ -21,9 +21,9 @@ print("*", a * b)
 print("/", a / b)   --浮点除法
 print("%", a % b)
 print("^", a ^ b)   --乘方
---print("//", a // b) --向下取整除法
---print("<<", 1 << 3) --左移
---print(">>", 8 >> 3) --右移
+print("//", a // b) --向下取整除法
+print("<<", 1 << 3) --左移
+print(">>", 8 >> 2) --右移
 
 -- type: string
 print("--------------------------------- string")
