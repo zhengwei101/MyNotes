@@ -29,6 +29,8 @@
 # Compiled files
 *.ilk
 *.pdb
+*.idb
+*.ipch
 
 # Executables
 *.exe
