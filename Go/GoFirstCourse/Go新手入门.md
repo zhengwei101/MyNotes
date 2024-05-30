@@ -1,0 +1,157 @@
+# Go语言快速上手
+
+## 入门
+
+### 开发环境
+
+```bash
+https://go.dev
+https://studygolang.com/dl
+https://goproxy.cn
+```
+
+### 基于云的开发环境
+
+```bash
+https://gitpod.io/#github项目地址
+```
+
+### 并发与并行的概念
+
+1. 多线程程序在一个核的CPU上运行
+2. 多线程程序在多个核的CPU上运行
+
+- 协程：用户态，轻量级线程，栈KB级别
+- 线程：内核态，线程跑多个协程，栈MB级别
+
+### Channel
+
+`make(chan 元素类型，[缓冲大小])`
+
+- 无缓冲通道 `make(chan int)`
+- 有缓冲通道 `make(chan int, 2)`
+  
+## Go 依赖管理
+
+### 环境变量 `$GOPATH`
+
+- 通过go.mod文件管理依赖包版本
+- 通过`go get` / `go mod`指令工具，管理依赖包
+
+### 依赖管理三要素
+
+1. 配置文件，描述依赖 `go.mod`
+2. 中心仓库管理依赖库 `Proxy`
+3. 本地工具 `go get/mod`
+
+### Go的GOPROXY配置
+
+```bash
+服务站点URL列表，"direct"表示源站
+
+# Linux or macOS
+export GOPROXY=https://goproxy.io,direct
+
+# PowerShell (Windows)
+$env:GOPROXY = "https://goproxy.io,direct"
+```
+
+上面的配置步骤只会当次终端内生效，如何长久生效呢，这样就不用每次都去配置环境变量了。
+
+Mac/Linux
+
+```bash
+# 设置你的 bash 环境变量
+echo "export GOPROXY=https://goproxy.io,direct" >> ~/.profile && source ~/.profile
+
+# 如果你的终端是 zsh，使用以下命令
+echo "export GOPROXY=https://goproxy.io,direct" >> ~/.zshrc && source ~/.zshrc
+```
+
+Windows
+
+1. 右键 我的电脑 -> 属性 -> 高级系统设置 -> 环境变量
+2. 在 “[你的用户名]的用户变量” 中点击 ”新建“ 按钮
+3. 在 “变量名” 输入框并新增 “GOPROXY”
+4. 在对应的 “变量值” 输入框中新增 “<https://goproxy.io,direct”>
+5. 最后点击 “确定” 按钮保存设置
+
+### 使用go命令来配置
+
+1.首先开启go module
+
+```bash
+go env -w GO111MODULE=on     // Windows  
+export GO111MODULE=on        // macOS 或 Linux
+```
+
+2.配置goproxy
+
+```bash
+阿里云配置
+go env -w GOPROXY=https://mirrors.aliyun.com/goproxy,direct      // Windows  
+export GOPROXY=https://mirrors.aliyun.com/goproxy,direct         // macOS 或 Linux
+
+七牛云配置
+go env -w GOPROXY=https://goproxy.cn,direct     // Windows  
+export GOPROXY=https://goproxy.cn,direct        // macOS 或 Linux
+
+用|分割多个代理
+export GOPROXY="https://goproxy.cn|https://goproxy.io,direct"
+```
+
+## 测试
+
+### 回归测试
+
+### 集成测试
+
+### 单元测试
+
+## 性能优化与软件质量
+
+- 软件质量至关重要
+- 在保证接口稳定的前提下改进具体的实现
+- 测试用例：覆盖尽可能多的场景，方便回归
+- 文档：做了什么，没做什么，能达到怎样的效果
+- 隔离：通过选项控制是否开启优化
+- 可观测：必要的日志输出
+
+## Go的单元测试
+
+在Go中我们针对包(package)编写测试代码。
+
+测试代码与包代码放在同一目录下，并且Go要求所有测试代码都存放在以`*_test.go`结尾的文件中。
+
+这使Go开发人员一眼就能分辨出哪些文件存放的包代码，哪些文件存放的是针对该包的测试代码。
+
+执行单元测试时，go test命令会将所有包目录下的`*_test.go`文件编译成一个临时二进制文件（我们可以通过`go test -c`显示编译出该文件），并执行该文件，后者将执行各个测试源文件中的名字格式为`TestXxx`函数所代表的测试用例并输出测试执行结果。
+
+### 课程资料
+
+[锁Lock、线程同步、WaitGroup](https://pkg.go.dev/sync)
+
+[Go Module](https://go.dev/blog/using-go-modules)
+
+[单元测试概念](https://go.dev/doc/tutorial/add-a-test)
+
+[单元测试规则](https://pkg.go.dev/testing)
+
+[Mock测试](https://github.com/bouk/monkey)
+
+[基准测试](https://pkg.go.dev/testing#hdr-Benchmarks)
+
+[数据库与 SQL 概念解读](https://zhuanlan.zhihu.com/p/41576768)
+
+[用 database/sql 建立连接并使用](https://github.com/go-sql-driver/mysql)
+
+[DSN 相关解读](https://en.wikipedia.org/wiki/Data_source_name)
+
+[GORM 解析](https://gorm.io/docs/index.html)
+
+### 项目实战 - 组件及技术点
+
+- [web框架 - Gin](https://github.com/gin-gonic/gin#quick-start)
+- [分层结构设计](https://github.com/bxcodec/go-clean-arch)
+- [文件操作 - 读文件](https://pkg.go.dev/io)
+- [数据查询 - 索引](https://www.baike.com/wikiid/5527083834876297305?prd=result_list&view_id=5di0ak8h3ag000)
