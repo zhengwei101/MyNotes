@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "bookstore/internal/store"
 	"bookstore/server"
 	"bookstore/store/factory"
 	"context"
