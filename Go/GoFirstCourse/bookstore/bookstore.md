@@ -20,3 +20,15 @@
     │   └── factory.go
     └── store.go
 ```
+
+## 空导入包
+
+```go
+import (
+ _ "bookstore/internal/store"
+    //...
+)
+```
+
+空导入(_ "xxx")，是有“副作用”的，即便是空导入，xxx中的init函数也会被执行，
+所以如果不引用internal/store包，store包中的init函数就不会被执行，一些内存结构就没法初始化。

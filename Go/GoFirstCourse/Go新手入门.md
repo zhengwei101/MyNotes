@@ -16,13 +16,81 @@ https://goproxy.cn
 https://gitpod.io/#github项目地址
 ```
 
-### 并发与并行的概念
+## 基本方法
 
-1. 多线程程序在一个核的CPU上运行
-2. 多线程程序在多个核的CPU上运行
+变量声明
 
-- 协程：用户态，轻量级线程，栈KB级别
-- 线程：内核态，线程跑多个协程，栈MB级别
+```go
+var a int = 10
+//从左到右，分别为:
+//1.修饰变量声明的关键字(var)
+//2.变量名(a)
+//3.变量类型(int)
+//4.赋值操作(=)
+//5.初值(10)
+```
+
+变量声明块
+
+```go
+var (
+    a int = 128
+    b int8 = 16
+    s string = "hello"
+    c rune = 'A'
+    t bool = true
+)
+```
+
+短变量声明
+
+```go
+a := 12
+b := 'A'
+c := "hello"
+
+//也可以一次声明多个变量
+a, b, c := 12, 'A', "hello"
+```
+
+声明并同时显示初始化
+
+```go
+var a = 13 //使用默认类型
+var b = int32(17) //显示指定类型
+var f = float32(3.14) //显示指定类型
+
+//或者
+a := 13
+b := int32(17)
+f := float32(3.14)
+s := []byte("hello, gopher!")
+
+//或者
+var (
+    a = 13
+    b = int32(17)
+    f = float32(3.14)
+)
+```
+
+变量声明原则
+
+- 聚类
+- 就近
+- 分支控制变量尽量用短变量声明形式
+
+### 并发与并行
+
+并发： 多线程程序在一个核的CPU上运行
+
+并行： 多线程程序在多个核的CPU上运行
+
+### 协程与线程
+
+协程：用户态，轻量级线程，栈KB级别
+
+线程：内核态，线程跑多个协程，栈MB级别
 
 ### Channel
 
@@ -30,12 +98,18 @@ https://gitpod.io/#github项目地址
 
 - 无缓冲通道 `make(chan int)`
 - 有缓冲通道 `make(chan int, 2)`
-  
+
+### package
+
+通过 go get 来获取远程依赖
+
+`go get -u 强制从网络更新远程依赖`
+
 ## Go 依赖管理
 
 ### 环境变量 `$GOPATH`
 
-- 通过go.mod文件管理依赖包版本
+- 通过`go.mod`文件管理依赖包版本
 - 通过`go get` / `go mod`指令工具，管理依赖包
 
 ### 依赖管理三要素
@@ -100,6 +174,14 @@ export GOPROXY=https://goproxy.cn,direct        // macOS 或 Linux
 export GOPROXY="https://goproxy.cn|https://goproxy.io,direct"
 ```
 
+## 配置
+
+viper(github.com/spf13/viper)
+
+## 调试
+
+delve(github.com/go-delve/delve)
+
 ## 测试
 
 ### 回归测试
@@ -125,7 +207,7 @@ export GOPROXY="https://goproxy.cn|https://goproxy.io,direct"
 
 这使Go开发人员一眼就能分辨出哪些文件存放的包代码，哪些文件存放的是针对该包的测试代码。
 
-执行单元测试时，go test命令会将所有包目录下的`*_test.go`文件编译成一个临时二进制文件（我们可以通过`go test -c`显示编译出该文件），并执行该文件，后者将执行各个测试源文件中的名字格式为`TestXxx`函数所代表的测试用例并输出测试执行结果。
+执行单元测试时，`go test`命令会将所有包目录下的`*_test.go`文件编译成一个临时二进制文件（我们可以通过`go test -c`显示编译出该文件），并执行该文件，后者将执行各个测试源文件中的名字格式为`TestXxx`函数所代表的测试用例并输出测试执行结果。
 
 ### 课程资料
 
