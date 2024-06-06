@@ -13,7 +13,6 @@ import "fmt"
 //在你执行append的时候，如果容量不够的话，它会扩容并返回新的slice
 //slice初始化时，也可以指定长度
 func main() {
-
 	s := make([]string, 3)
 	s[0] = "a"
 	s[1] = "b"

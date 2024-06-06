@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"strconv"
 )
 
 type user struct {
@@ -24,17 +25,27 @@ func findUser(users []user, name string) (v *user, err error) {
 }
 
 func main() {
-	u, err := findUser([]user{{"wang", "1024"}}, "wang")
+	x, y := 1, 2
+	x, y = y+3, x+2 //先计算出右值y+3、x+2，然后再对x,y变量赋值
+	fmt.Println(x, y)
+
+	//空标识符_(blank identifier)，通过作为忽略占位符使用
+	i, _ := strconv.Atoi("12") //忽略Atoi的error返回值
+	fmt.Println(i)
+
+	//在处理函数错误时，退化赋值允许我们重复使用err变量，这是相当有益的
+	w, err := findUser([]user{{"wang", "1024"}}, "wang")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(u.name) // wang
+	fmt.Println(w.name) // wang
 
-	if u, err := findUser([]user{{"wang", "1024"}}, "li"); err != nil {
+	//err退化为赋值，l为新定义
+	if l, err := findUser([]user{{"li", "2048"}}, "wang"); err != nil {
 		fmt.Println(err) // not found
 		return
 	} else {
-		fmt.Println(u.name)
+		fmt.Println(l.name)
 	}
 }

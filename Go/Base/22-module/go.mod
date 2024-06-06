@@ -1,4 +1,4 @@
-module github.com/zhengwei101/hellomodule
+module hellomodule
 
 go 1.22.2
 

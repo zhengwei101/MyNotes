@@ -7,8 +7,20 @@ type user struct {
 	password string
 }
 
+type manager struct {
+	user  //匿名嵌入其他类型
+	title string
+	age   int
+}
+
 // 结构体是带类型的字段的集合
 func main() {
+	var m manager
+	m.name = "Tom"
+	m.age = 29
+	m.title = "CTO"
+	fmt.Println(m)
+
 	a := user{name: "wang", password: "1024"}
 	b := user{"wang", "1024"}
 	c := user{name: "wang"}
