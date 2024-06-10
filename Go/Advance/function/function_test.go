@@ -94,3 +94,22 @@ func TestFuncClosure2(t *testing.T) {
 		fmt.Printf("0+1+...+%d=%d\n", i, s)
 	}
 }
+
+func fibonacci() func() int {
+	a, b := 0, 1
+	return func() int {
+		a, b = b, a+b
+		return a
+	}
+}
+
+func TestFibonacci(t *testing.T) {
+	f := fibonacci()
+	fmt.Println(f())
+	fmt.Println(f())
+	fmt.Println(f())
+	fmt.Println(f())
+	fmt.Println(f())
+	fmt.Println(f())
+
+}
