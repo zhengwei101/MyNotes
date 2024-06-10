@@ -1,6 +1,9 @@
 package main_test
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestSliceGrowing(t *testing.T) {
 	s := []int{}
@@ -29,4 +32,27 @@ func TestSliceComparing(t *testing.T) {
 	// 	t.Log("equal")
 	// }
 	t.Log(a, b)
+}
+
+// func TestSliceStack(t *testing.T) {
+// 	//栈最大容量5
+// 	stack := make([]int, 0, 5)
+// }
+
+func TestSliceExtention(t *testing.T) {
+	arr := [...]int{0, 1, 2, 3, 4, 5, 6, 7}
+	s1 := arr[2:6]
+	s2 := s1[3:5]
+	t.Log(s1) //[2 3 4 5]
+	t.Log(s2) //[5 6]
+	//slice是数组arr的视图(view)
+	//slice可以向后扩展，不可以向前扩展
+	//s[i]不可以超越len(s), 向后扩展不可以超载㡳层数组cap(s)
+	s3 := append(s2, 10) //将7改为10
+	s4 := append(s3, 11)
+	s5 := append(s4, 12)
+	fmt.Println("s3,s4,s5 = ", s3, s4, s5)
+	fmt.Println("arr = ", arr)
+	//添加元素时，如果超越cap，系统会重新分配更大的底层数组
+
 }

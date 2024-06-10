@@ -38,6 +38,12 @@ mv $HOME/go/go $HOME/go/go1.22.4
 
 修改`$HOME/.bashrc`文件
 
+确认一下命令行配置文件是哪个：
+
+- 如果用的是zsh，那么对应的文件一般是`~/.zshrc`
+- 如果用的是bash，那么对应的文件一般是`~/.bashrc`或者`~/.bash_profile`
+- 通过执行`echo $SHELL`可以准确找到是哪个shell
+
 ```bash
 #Basic envs
 #export LANG="en_US.UTF-8" # 设置系统语言为en_US.UTF-8，避免终端出现中文乱码

@@ -24,7 +24,24 @@ func findUser(users []user, name string) (v *user, err error) {
 	return nil, errors.New("not found")
 }
 
+type errorString struct {
+	s string
+}
+
+func (e errorString) Error() string {
+	return e.s
+}
+func NewError(text string) error {
+	return &errorString{text} //这里要取地地址
+}
+
+var ErrType = NewError("EOF")
+
 func main() {
+	if ErrType == NewError("EOF") {
+		fmt.Println("Error: ", ErrType)
+	}
+
 	x, y := 1, 2
 	x, y = y+3, x+2 //先计算出右值y+3、x+2，然后再对x,y变量赋值
 	fmt.Println(x, y)
