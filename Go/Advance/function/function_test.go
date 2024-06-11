@@ -1,9 +1,15 @@
 package function
 
 import (
+	"bufio"
 	"fmt"
+	"io"
+	"os"
+	"strings"
 	"testing"
 	"time"
+
+	"advance/function/fib"
 )
 
 func timeSpent(inner func(op int) int) func(op int) int {
@@ -63,6 +69,7 @@ func TestQueue(t *testing.T) {
 	fmt.Println(q.Pop())
 }
 
+// 使用闭包输出斐波那契数列
 func adder() func(int) int {
 	sum := 0
 	return func(v int) int {
@@ -95,7 +102,49 @@ func TestFuncClosure2(t *testing.T) {
 	}
 }
 
-func fibonacci() func() int {
+func TestFibonacci(t *testing.T) {
+	f := fib.Fibonacci()
+	fmt.Println(f())
+	fmt.Println(f())
+	fmt.Println(f())
+	fmt.Println(f())
+	fmt.Println(f())
+	fmt.Println(f())
+}
+
+func writeFile(filename string) {
+	//file, err := os.Create(filename)
+	file, err := os.OpenFile(
+		filename,
+		os.O_EXCL|os.O_CREATE,
+		0666,
+	)
+	if err != nil {
+		if pathError, ok := err.(*os.PathError); !ok {
+			//如果err不是PathError，就结束程序
+			panic(err)
+		} else {
+			fmt.Println("PathError:", pathError.Op, pathError.Path, pathError.Err)
+		}
+		return
+	}
+
+	defer file.Close()
+
+	writer := bufio.NewWriter(file)
+	defer writer.Flush()
+
+	f := fib.Fibonacci()
+	for i := 0; i < 20; i++ {
+		fmt.Fprintln(writer, f())
+	}
+}
+
+func TestWriteFile(t *testing.T) {
+	writeFile("fib.txt")
+}
+
+func fibonacci2() intGen {
 	a, b := 0, 1
 	return func() int {
 		a, b = b, a+b
@@ -103,13 +152,28 @@ func fibonacci() func() int {
 	}
 }
 
-func TestFibonacci(t *testing.T) {
-	f := fibonacci()
-	fmt.Println(f())
-	fmt.Println(f())
-	fmt.Println(f())
-	fmt.Println(f())
-	fmt.Println(f())
-	fmt.Println(f())
+type intGen func() int
 
+// 为函数实现Read接口
+func (g intGen) Read(p []byte) (n int, err error) {
+	next := g()
+	if next > 100 {
+		return 0, io.EOF
+	}
+	s := fmt.Sprintf("%d\n", next)
+
+	//TODO: incorrect if p is too small!
+	return strings.NewReader(s).Read(p)
+}
+
+func printFileContents(reader io.Reader) {
+	scanner := bufio.NewScanner(reader)
+	for scanner.Scan() {
+		fmt.Println(scanner.Text())
+	}
+}
+
+func TestFibonacci2(t *testing.T) {
+	f := fibonacci2()
+	printFileContents(f)
 }
