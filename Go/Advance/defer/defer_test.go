@@ -1,6 +1,8 @@
 package defer_test
 
 import (
+	"errors"
+	"fmt"
 	"testing"
 )
 
@@ -21,4 +23,26 @@ func TestDefer(t *testing.T) {
 
 	t.Log("Started")
 	panic("Fatal error") //defer 仍会执行
+}
+
+func TestRecover(t *testing.T) {
+	defer func() {
+		r := recover()
+		if r != nil {
+			if err, ok := r.(error); ok {
+				//如果是一个错误，就处理错误
+				fmt.Println("Error Occurred: ", err)
+			} else {
+				//重新panic
+				panic(fmt.Sprintf("I don't know what to do: %v", r))
+			}
+		}
+	}()
+
+	panic(errors.New("this is an error"))
+	//panic(123)
+
+	// 	b := 0
+	// 	a := 5 / b
+	// 	fmt.Println(a)
 }
