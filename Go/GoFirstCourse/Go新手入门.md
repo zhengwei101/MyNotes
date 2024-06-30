@@ -83,22 +83,68 @@ var (
 ### 并发与并行
 
 并发： 多线程程序在一个核的CPU上运行
+并发是指同时运行多个任务，但这些任务不一定在同一时刻都在运行。
 
 并行： 多线程程序在多个核的CPU上运行
+并行是指同时运行多个任务，并且这些任务在同一时刻都在运行，通常需要使用多核CPU或者分布式计算系统来实现并行运算。
 
-### 协程与线程
+### 协程 Coroutine
 
-协程：用户态，轻量级线程，栈KB级别
+协程与线程
 
-线程：内核态，线程跑多个协程，栈MB级别
+- 协程：用户态，轻量级线程，栈KB级别
+- 线程：内核态，线程跑多个协程，栈MB级别
 
-### Channel
+协程的特点
+
+- **非抢占式**多任务处理，由协程主动交出控制权
+- 编译器/解释器/虚拟机层面的多任务
+- 多个协程可能在一个或多个线程上运行
+
+goroutine的定义
+
+- 任何函数只需加上go就能送给调度器运行
+- 不需要在定义时区分是否是异步函数
+- 调度器在合适的点进行切换
+- 使用-race来检测数据访问冲突
+
+goroutine可能的切换点
+
+- `I/O`, `select`
+- `channel`
+- 等待锁
+- 函数调用（有时）
+- `runtime.Gosched()`
+
+以上只是参考，不能保证切换，不能保证在其他地方不切换
+
+### 通道 Channel
+
+理论基础： Communication Sequential Process(CSP)
 
 `make(chan 元素类型，[缓冲大小])`
 
 - 无缓冲通道 `make(chan int)`
 - 有缓冲通道 `make(chan int, 2)`
 
+Don't communicate by sharing memory; share memory by communicating.
+不要通过共享内存来通信；通过通信来共享内存。
+
+### 逃逸案例
+
+多级间接赋值容易导致逃逸，这里的多级间接指的是，对某个引用类对象中的引用类成员进行赋值
+（记住公式：Data.Field = Value,如果Data,Field都是引用类的数据类型，则会导致Value逃逸。
+这里的等号=不单单是赋值，也表示参数传递）。
+
+Go语言中的引用类数据类型有func, interface, slice, map, chan, *Type
+
+- 一个值被分享到函数栈帧范围之外
+- 在for循环外声明，在for循环内分配，同理闭包
+- 发送指针或者带有指针的值到channel中
+- 在一个切片上存储指针或带指针的值
+- slice的背后数组被重新分配了
+- 在interface类型上调用方法
+  
 ### package
 
 通过 go get 来获取远程依赖
@@ -181,6 +227,25 @@ viper(github.com/spf13/viper)
 ## 调试
 
 delve(github.com/go-delve/delve)
+
+## Go 标准库
+
+http
+
+bufio
+
+log
+
+encoding/json
+
+regexp
+
+time
+
+strings/math/rand
+
+查看标准库的文档
+`godoc -http :8777`
 
 ## 测试
 

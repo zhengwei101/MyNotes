@@ -2,11 +2,9 @@ package main
 
 import (
 	"fmt"
-
 	"time"
-
-	"imooc.com/ccmouse/learngo/retriever/mock"
-	"imooc.com/ccmouse/learngo/retriever/real"
+	"u2pppw/retriever/mock"
+	"u2pppw/retriever/real"
 )
 
 type Retriever interface {
@@ -47,8 +45,7 @@ func session(s RetrieverPoster) string {
 func main() {
 	var r Retriever
 
-	mockRetriever := mock.Retriever{
-		Contents: "this is a fake imooc.com"}
+	mockRetriever := mock.Retriever{Contents: "this is a fake imooc.com"}
 	r = &mockRetriever
 	inspect(r)
 
@@ -65,8 +62,7 @@ func main() {
 		fmt.Println("r is not a mock retriever")
 	}
 
-	fmt.Println(
-		"Try a session with mockRetriever")
+	fmt.Println("Try a session with mockRetriever")
 	fmt.Println(session(&mockRetriever))
 }
 

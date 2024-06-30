@@ -3,10 +3,9 @@ package main
 import (
 	"fmt"
 	"os"
+	"u2pppw/functional/fib"
 
 	"bufio"
-
-	"imooc.com/ccmouse/learngo/functional/fib"
 )
 
 func tryDefer() {

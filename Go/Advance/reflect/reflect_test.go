@@ -76,3 +76,76 @@ func TestInvokeByName(t *testing.T) {
 	reflect.ValueOf(e).MethodByName("UpdateAge").Call([]reflect.Value{reflect.ValueOf(50)})
 	t.Log("Update Age:", e)
 }
+
+type User struct {
+	Id   int
+	Name string
+	Age  int
+}
+
+func (u User) Hello(name string) {
+	fmt.Printf("Hello, %s, My name is %s", name, u.Name)
+}
+
+func Info(o interface{}) {
+	t := reflect.TypeOf(o)
+	fmt.Println("Type:", t.Name())
+
+	if k := t.Kind(); k != reflect.Struct {
+		fmt.Println("xxx")
+		return
+	}
+
+	v := reflect.ValueOf(o)
+	fmt.Println("Fields:")
+
+	for i := 0; i < t.NumField(); i++ {
+		f := t.Field(i)
+		val := v.Field(i).Interface()
+		fmt.Printf("%6s: %v = %v\n", f.Name, f.Type, val)
+	}
+
+	for i := 0; i < t.NumMethod(); i++ {
+		m := t.Method(i)
+		fmt.Printf("%6s: %v\n", m.Name, m.Type)
+	}
+}
+
+func TestUserInfo(t *testing.T) {
+	u := User{1, "OK", 12}
+	Info(u)
+}
+
+func Set(o interface{}) {
+	v := reflect.ValueOf(o)
+
+	if v.Kind() == reflect.Ptr && !v.Elem().CanSet() {
+		fmt.Println("xxx")
+		return
+	} else {
+		v = v.Elem()
+	}
+
+	f := v.FieldByName("Name")
+	if !f.IsValid() {
+		fmt.Println("BAD")
+		return
+	}
+	if f.Kind() == reflect.String {
+		f.SetString("Hello")
+	}
+}
+func TestUserSet(t *testing.T) {
+	u := User{1, "OK", 12}
+	Set(&u)
+	fmt.Println(u)
+}
+
+func TestUserMethod(t *testing.T) {
+	u := User{1, "OK", 12}
+
+	v := reflect.ValueOf(u)
+	mv := v.MethodByName("Hello")
+	args := []reflect.Value{reflect.ValueOf("joe")}
+	mv.Call(args)
+}

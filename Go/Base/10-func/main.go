@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+)
 
 func add(a int, b int) int {
 	return a + b
@@ -21,7 +24,7 @@ func test(x int) func() { //返回函数类型
 	}
 }
 
-//return语句不是ret汇编指令，它会先更新返回值
+// return语句不是ret汇编指令，它会先更新返回值
 func testDefer() (z int) {
 	defer func() {
 		println("defer: ", z)
@@ -85,8 +88,8 @@ func testClosure() []func() {
 	return s //返回匿名函数列表
 }
 
-//多个匿名函数引用同一环境变量，会让事情变得更加复杂
-//任何的修改行为都会影响其他函数取值，在并发模式下可能需要做同步处理
+// 多个匿名函数引用同一环境变量，会让事情变得更加复杂
+// 任何的修改行为都会影响其他函数取值，在并发模式下可能需要做同步处理
 func testMulti(x int) (func(), func()) { //返回两个匿名函数
 	return func() {
 			println(x)
@@ -96,9 +99,24 @@ func testMulti(x int) (func(), func()) { //返回两个匿名函数
 		}
 }
 
+// go noinline
+func getRandom() *int {
+	tmp := rand.Intn(100)
+	return &tmp
+}
+
 func main() {
 	res := add(1, 2)
 	fmt.Println(res, add2(100, 200))
+
+	//Runnint the escape analysis shows us tmp escapes to the heap
+	// go build -gcflags '-m'
+	//逃逸分析是通过检查变量的作用域是否超出了它所在的栈，来决定是否将它分配在堆上的技术，
+	//逃逸分析在大多数语言里属于静态分析：在编译期由静态代码分析来决定一个值是否能被分配在栈帧上
+	//还是需要“逃逸”到堆上。
+
+	num := getRandom()
+	fmt.Printf("random num: %d\n", num)
 
 	//匿名函数
 	{

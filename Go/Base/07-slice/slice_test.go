@@ -5,6 +5,25 @@ import (
 	"testing"
 )
 
+type TransInfo interface{}
+
+type Fragment interface {
+	Exec(transInfo TransInfo) error
+}
+type GetPodAction struct{}
+
+func (g GetPodAction) Exec(transInfo TransInfo) error {
+	return nil
+}
+
+func TestSlice(t *testing.T) {
+	//s := make([]int)
+	s1 := []int{1, 2, 3, 4, 5, 6}
+	s2 := make([]int, 5, 10)
+	s3 := []int{1, 2, 3, 4, 5}
+	fmt.Println(s1, s2, s3)
+}
+
 func TestSliceGrowing(t *testing.T) {
 	s := []int{}
 	for i := 0; i < 10; i++ {
@@ -54,5 +73,27 @@ func TestSliceExtention(t *testing.T) {
 	fmt.Println("s3,s4,s5 = ", s3, s4, s5)
 	fmt.Println("arr = ", arr)
 	//添加元素时，如果超越cap，系统会重新分配更大的底层数组
+}
+
+func SliceAppend(s []int) []int {
+	s = append(s, 3)
+	return s
+}
+
+func TestSliceAppend(t *testing.T) {
+	s := make([]int, 0)
+	fmt.Println(s)
+	s = SliceAppend(s)
+	fmt.Println(s)
+
+	course := []string{"go", "grpc", "mysql", "es", "gin"}
+	//mycourse := append(course[:2], course[3:]...) //这里会修改course的数据
+	mycourse := make([]string, 1) //这样则不会修改course的数据
+	mycourse = append(mycourse, course[:2]...)
+	mycourse = append(mycourse, course[3:]...)
+	fmt.Println("mycourse:", mycourse)
+	fmt.Println("course: ", course)
+	course = course[:3]
+	fmt.Println("reduce: ", course)
 
 }

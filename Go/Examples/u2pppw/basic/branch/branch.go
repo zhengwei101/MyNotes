@@ -2,15 +2,14 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 )
 
 func grade(score int) string {
 	g := ""
 	switch {
 	case score < 0 || score > 100:
-		panic(fmt.Sprintf(
-			"Wrong score: %d", score))
+		panic(fmt.Sprintf("Wrong score: %d", score))
 	case score < 60:
 		g = "F"
 	case score < 80:
@@ -28,7 +27,7 @@ func main() {
 	// please check what current directory is,
 	// and change filename accordingly.
 	const filename = "abc.txt"
-	if contents, err := ioutil.ReadFile(filename); err != nil {
+	if contents, err := os.ReadFile(filename); err != nil {
 		fmt.Println(err)
 	} else {
 		fmt.Printf("%s\n", contents)

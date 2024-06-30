@@ -16,7 +16,6 @@ func (a *atomicInt) increment() {
 	func() {
 		a.lock.Lock()
 		defer a.lock.Unlock()
-
 		a.value++
 	}()
 }
@@ -24,7 +23,6 @@ func (a *atomicInt) increment() {
 func (a *atomicInt) get() int {
 	a.lock.Lock()
 	defer a.lock.Unlock()
-
 	return a.value
 }
 

@@ -34,10 +34,20 @@ func Sum(ops ...int) int {
 	return ret
 }
 
+func closure(x int) func(int) int {
+	return func(y int) int {
+		return x + y
+	}
+}
+
 func TestFunction(t *testing.T) {
 	tsSF := timeSpent(slowFun)
 	fmt.Printf("result: %d\n", tsSF(10))
-	fmt.Printf("sum: %d", Sum(1, 2, 3, 4, 5))
+	fmt.Printf("sum: %d\n", Sum(1, 2, 3, 4, 5))
+
+	f := closure(10)
+	fmt.Printf("closure: %d\n", f(1))
+	fmt.Printf("closure: %d\n", f(2))
 }
 
 type Queue []interface{}

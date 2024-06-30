@@ -28,15 +28,6 @@ func div(a, b int) (q, r int) {
 	return a / b, a % b
 }
 
-func apply(op func(int, int) int, a, b int) int {
-	p := reflect.ValueOf(op).Pointer()
-	opName := runtime.FuncForPC(p).Name()
-	fmt.Printf("Calling function %s with args "+
-		"(%d, %d)\n", opName, a, b)
-
-	return op(a, b)
-}
-
 func sum(numbers ...int) int {
 	s := 0
 	for i := range numbers {
@@ -47,6 +38,15 @@ func sum(numbers ...int) int {
 
 func swap(a, b int) (int, int) {
 	return b, a
+}
+
+func apply(op func(int, int) int, a, b int) int {
+	p := reflect.ValueOf(op).Pointer()
+	opName := runtime.FuncForPC(p).Name()
+	fmt.Printf("Calling function %s with args "+
+		"(%d, %d)\n", opName, a, b)
+
+	return op(a, b)
 }
 
 func main() {

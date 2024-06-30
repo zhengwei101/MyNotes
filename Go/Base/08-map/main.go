@@ -2,7 +2,40 @@ package main
 
 import "fmt"
 
+func mapFunc[T any, M any](a []T, f func(T) M) []M {
+	n := make([]M, len(a), cap(a))
+	for i, e := range a {
+		n[i] = f(e)
+	}
+	return n
+}
+
+func filterFunc[T any](a []T, f func(T) bool) []T {
+	var n []T
+	for _, e := range a {
+		if f(e) {
+			n = append(n, e)
+		}
+	}
+	return n
+}
+
+func testGeneric() {
+	vi := []int{1, 2, 3, 4, 5, 6}
+	vs := mapFunc(vi, func(v int) string {
+		return "<" + fmt.Sprint(v) + ">"
+	})
+	fmt.Println(vs)
+
+	vf := filterFunc(vi, func(v int) bool {
+		return v < 4
+	})
+	fmt.Println(vf)
+}
+
 func main() {
+	testGeneric()
+
 	m := make(map[string]int) //创建字典类型对象
 	m["one"] = 1
 	m["two"] = 2

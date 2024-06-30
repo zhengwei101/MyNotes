@@ -56,7 +56,7 @@ export GOROOT=$GO_INSTALL_DIR/$GOVERSION # GOROOT 设置
 export GOPATH=$WORKSPACE/golang # GOPATH 设置
 export PATH=$GOROOT/bin:$GOPATH/bin:$PATH # 将GO语言自带和通过go install安装的二进制文件加入到PATH路径中
 export GO111MODULE="on" # 开启 Go moudles 特性
-#export GOPROXY=https://goproxy.cn,direct # 安装Go模块时，代理服务器设置
+export GOPROXY=https://goproxy.cn,direct # 安装Go模块时，代理服务器设置
 export GOPRIVATE=
 export GOSUMDB=off # 关闭校验 Go 依赖包的哈希值
 
@@ -118,4 +118,9 @@ mkdir -p $GOPATH && cd $GOPATH
 go work init
 go env GOWORK # 执行此命令，查看 go.work 工作区文件路径
 /home/wilbur/Work/golang/go.work
+```
+
+```cmd
+go env -w GO111MODULE=on
+go env -w GOPROXY=https://goproxy.cn,direct
 ```
