@@ -124,3 +124,35 @@ go env GOWORK # 执行此命令，查看 go.work 工作区文件路径
 go env -w GO111MODULE=on
 go env -w GOPROXY=https://goproxy.cn,direct
 ```
+
+### Protobuf的安装
+
+查看有哪些可用版本
+
+```bash
+brew search protobuf 
+```
+
+安装想要的版本
+
+```bash
+brew install protobuf@3
+```
+
+切换指定版本protobuf为默认版本
+
+```sh
+brew list | grep protobuf
+```
+
+如果有多个版本的protobuf,则将你想要的版本设置为默认的版本。
+
+假设当前默认的版本为`protobuf@21`, 则先`brew unlink protobuf@21`，
+
+然后再重新链接想要的默认版本`brew link protobuf@3`
+
+再次查看protoc的版本
+
+```sh
+proto --version
+```
