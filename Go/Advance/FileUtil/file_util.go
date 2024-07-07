@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/jessevdk/go-flags"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/jessevdk/go-flags"
 )
 
 func RenameFile(src, dst string) (err error) {
@@ -50,14 +51,6 @@ func NewFileName(src, tag string) string {
 		return newName
 	}
 	return src
-}
-
-func isDir(path string) (bool, error) {
-	fileInfo, err := os.Stat(path)
-	if err != nil {
-		return false, err
-	}
-	return fileInfo.IsDir(), nil
 }
 
 func RenameDirs(dirPath, tag string) error {
@@ -109,29 +102,7 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	/*
-		err = filepath.Walk(opts.Dir, func(path string, info os.FileInfo, err error) error {
-			if info.IsDir() {
-				paths = append(paths, path)
-			}
-			return nil
-		})
-		if len(paths) > 0 {
-			for _, path := range paths {
-				newPath := NewFileName(path, opts.Tag)
-				if newPath == path {
-					continue
-				}
-				fmt.Println("rename dir: ", path, " to ", newPath)
-				//3. 文件夹重命名为新的名称
-				err := RenameFile(path, newPath)
-				if err != nil {
-					panic(err)
-				}
-			}
-		}
-		paths = nil
-	*/
+
 	paths := make([]string, 0)
 	err = filepath.Walk(opts.Dir, func(path string, info os.FileInfo, err error) error {
 		if len(path) > 0 && !info.IsDir() {
@@ -141,7 +112,6 @@ func main() {
 	})
 	if err != nil {
 		panic(err)
-		return
 	}
 
 	//2. 获取文件名
@@ -158,7 +128,6 @@ func main() {
 		err := RenameFile(path, newPath)
 		if err != nil {
 			panic(err)
-			return
 		}
 	}
 
