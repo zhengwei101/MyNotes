@@ -23,12 +23,67 @@ func RenameFile(src, dst string) (err error) {
 	return err
 }
 
+func renameDir(src, dst string) (err error) {
+	if src == dst {
+		return nil
+	}
+	fileInfo, err := os.Stat(src)
+	if os.IsNotExist(err) {
+		fmt.Println("File does not exist:", src)
+		return nil
+	}
+	if !fileInfo.IsDir() {
+		fmt.Println("File is not a directory:", src)
+	}
+	err = os.Rename(src, dst)
+	if err != nil {
+		panic(err)
+	} else {
+		println("文件夹重命名成功")
+	}
+	return err
+}
+
 func NewFileName(src, tag string) string {
 	if strings.Contains(src, tag) {
 		newName := strings.Replace(src, tag, "", -1)
 		return newName
 	}
 	return src
+}
+
+func isDir(path string) (bool, error) {
+	fileInfo, err := os.Stat(path)
+	if err != nil {
+		return false, err
+	}
+	return fileInfo.IsDir(), nil
+}
+
+func RenameDirs(dirPath, tag string) error {
+	files, err := os.ReadDir(dirPath)
+	if err != nil {
+		return err
+	}
+	for _, file := range files {
+		if file.IsDir() {
+			path := filepath.Join(dirPath, file.Name())
+			newPath := NewFileName(path, tag)
+			if newPath == path {
+				err := RenameDirs(path, tag)
+				if err != nil {
+					return err
+				}
+			}
+			fmt.Println("rename dir: ", path, " to ", newPath)
+			//3. 文件夹重命名为新的名称
+			err := renameDir(path, newPath)
+			if err != nil {
+				panic(err)
+			}
+		}
+	}
+	return err
 }
 
 type Options struct {
@@ -49,25 +104,62 @@ func main() {
 	//./file_util -d "/Users/zhengw/Downloads/test" -t "【www.xxx.cn】"
 
 	//1. 遍历指定文件夹
+	err = RenameDirs(opts.Dir, opts.Tag)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	/*
+		err = filepath.Walk(opts.Dir, func(path string, info os.FileInfo, err error) error {
+			if info.IsDir() {
+				paths = append(paths, path)
+			}
+			return nil
+		})
+		if len(paths) > 0 {
+			for _, path := range paths {
+				newPath := NewFileName(path, opts.Tag)
+				if newPath == path {
+					continue
+				}
+				fmt.Println("rename dir: ", path, " to ", newPath)
+				//3. 文件夹重命名为新的名称
+				err := RenameFile(path, newPath)
+				if err != nil {
+					panic(err)
+				}
+			}
+		}
+		paths = nil
+	*/
 	paths := make([]string, 0)
 	err = filepath.Walk(opts.Dir, func(path string, info os.FileInfo, err error) error {
-		if !info.IsDir() {
+		if len(path) > 0 && !info.IsDir() {
 			paths = append(paths, path)
 		}
 		return nil
 	})
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 		return
 	}
+
 	//2. 获取文件名
+	if len(paths) == 0 {
+		return
+	}
 	for _, path := range paths {
 		newPath := NewFileName(path, opts.Tag)
-		fmt.Println(newPath)
+		if newPath == path {
+			continue
+		}
+		fmt.Println("rename ", path, " to ", newPath)
 		//3. 文件重命名为新的名称
 		err := RenameFile(path, newPath)
 		if err != nil {
+			panic(err)
 			return
 		}
 	}
+
 }
