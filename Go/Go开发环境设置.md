@@ -65,6 +65,11 @@ export GOSUMDB=off # 关闭校验 Go 依赖包的哈希值
 在使用模块时，`$GOPATH`是无意义的，不过它还是会把下载的依赖，储存在`$GOPATH/pkg/mod`目标中，
 也会把`go install`的二进制文件存放在`$GOPATH/bin`目录中。
 
+### GOPROXY
+
+`go env -w`不会写入环境变量，如果跟现有环境变量冲突则以环境变量为准
+
+
 ## 安装 `protobuf`
 
 Protocol buffer compiler

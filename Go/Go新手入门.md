@@ -267,6 +267,21 @@ strings/math/rand
 查看标准库的文档
 `godoc -http :8777`
 
+gRPC网关
+
+```sh
+安装protoc-gen-grpc-gateway工具
+go get github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
+go install github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
+
+下载annotations包
+go get github.com/googleapis/googleapis
+
+根据proto文件生成pb.go和pb.gw.go文件
+protoc -I="xxx/pkg/mod/github.com/googleapis/googleapis@vxxxx" --go_out=. --go-grpc_out=. --grpc-gateway_out=. --proto_path=./micro_service/idl greet.proto
+
+```
+
 ## 测试
 
 ### 回归测试
@@ -283,6 +298,24 @@ strings/math/rand
 - 文档：做了什么，没做什么，能达到怎样的效果
 - 隔离：通过选项控制是否开启优化
 - 可观测：必要的日志输出
+
+## Grafana搭建
+
+## Prometheus数据上报与查询
+
+## etcd
+
+etcd的key支持按前缀查询和监听，只需要添加WithPrefix()选项
+
+Server向etcd注册自己，且2秒后自动过期，所以server需要每隔1秒重复注册一次。
+
+Server一旦宕机，最多2秒后etcd会自动将其删除。
+
+Client通过前缀获得所有存活的Server，且在前缀上安装监听器，有新Server加入或老Server被删除时，Client都能及时感知到。
+
+## 微服务框架
+
+Kitex是字节开源的Golang微服务RPC框架。
 
 ## Go的单元测试
 
