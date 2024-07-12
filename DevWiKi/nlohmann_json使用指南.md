@@ -128,21 +128,18 @@ int main()
 //获取数据
 //方式一, find迭代器
 auto objJson = myJson.find("region");
-if (objJson != myJson.end())
-{
+if (objJson != myJson.end()) {
     string s = objJson.value(); //必须显示指明接收value值的类型
 }
-
-try
-{
+try {
     //方式二, at
     bool pass = myJson.at("pass"); //如果不存在会抛 out_of_range 异常
     //方式三, []
     vector<int> v = myJson["vector"]; //如果不存在会抛 type_error 异常
 }
-catch (const std::exception& e )
-{
-    cout <<  e.what() << endl;
+catch (nlohmann::detail::exception& e) {
+    string error = std::format("json throw an error:{}, Try to Fix it!", e.what());
+    cout << error << endl;
 }
 //获取嵌套object的方式类似
 int n = myJson["1st"]["3rd"];
@@ -225,32 +222,47 @@ cout << myJson.dump();
 更神奇的是还可以支持自定义类型，只要我们给出该类型与json的转换关系即可。
 
 ```c++
- //3.支持自定义结构体
- magic::Person p = {"Peter", 18};
- magic::DownParam d = { "http://a/b.txt", "/user/download"};
+namespace magic {
+struct Person
+{
+    string Name;
+    int Age = 0;
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE(Person, Name, Age)
+};
 
- json j = p;
- cout << j << endl;
- 
- j.clear();
+struct DownParam
+{
+    string Url;
+    string SaveDir;
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE(DownParam, Url, SaveDir)
+};
+} // namespace magic
 
- j = d;
- cout << j << endl;
+//3.支持自定义结构体
+magic::Person p = {"Peter", 18};
+magic::DownParam d = {"http://a/b.txt", "/user/download"};
+json j = p;
+cout << j << endl;
 
- json myJson;
- myJson["Person"] = p;
- myJson["DownParam"] = d;
- 
- auto re = myJson["Person"].get<magic::Person>();
- cout << re.Name << ", " << re.Age << endl;
+j.clear();
 
- auto dw = myJson["DownParam"].get<magic::DownParam>();
- cout << dw.url << ", " << dw.save_dir << endl;
+j = d;
+cout << j << endl;
+
+json myJson;
+myJson["Person"] = p;
+myJson["DownParam"] = d;
+
+auto re = myJson["Person"].get<magic::Person>();
+cout << re.Name << ", " << re.Age << endl;
+
+auto dw = myJson["DownParam"].get<magic::DownParam>();
+cout << dw.Url << ", " << dw.SaveDir << endl;
 ```
 
 输出
 
-```
+```sh
 {"Age":18,"Name":"Peter"}
 {"SaveDir":"/user/download","Url":"http://a/b.txt"}
 Peter, 18
@@ -263,60 +275,49 @@ http://a/b.txt, /user/download
 class ComplexOne
 {
 private:
- vector<string> vStr;
- unordered_map<string, magic::Person> hashNameIndex;
- 
+    vector<string> vStr;
+    std::unordered_map<string, magic::Person> hashNameIndex;
+
 public:
- vector<string> GetVStr()
- {
-  return vStr;
- }
+    vector<string> GetVStr() { return vStr; }
 
- void AddStr(const string& str)
- {
-  vStr.emplace_back(str);
- }
+    void AddStr(const string& str) { vStr.emplace_back(str); }
 
- void AddPair(string key, magic::Person p)
- {
-  hashNameIndex[key] = p;
- }
+    void AddPair(string key, magic::Person p) { hashNameIndex[key] = p; }
 
- friend void to_json(json& j, const ComplexOne& cp);
- friend void from_json(const json& j, ComplexOne& cp);
+    friend void to_json(json& j, const ComplexOne& cp);
+    friend void from_json(const json& j, ComplexOne& cp);
 };
 
 void to_json(json& j, const ComplexOne& cp)
 {
- j = json{
- {"VStr", cp.vStr},
- {"HashNameIndex", cp.hashNameIndex}
- };
+    j = json{{"vstr", cp.vStr}, {"hash_name_index", cp.hashNameIndex}};
 }
 
 void from_json(const json& j, ComplexOne& cp)
 {
- j.at("VStr").get_to(cp.vStr);
- j.at("HashNameIndex").get_to(cp.hashNameIndex);
+    j.at("vstr").get_to(cp.vStr);
+    j.at("hash_name_index").get_to(cp.hashNameIndex);
 }
 
 int main()
 {
- //支持自定义类
- magic::Person p = {"Peter", 18};
+    //4. 支持自定义类
+    magic::Person p = {"Peter", 18};
 
- ComplexOne one;
- one.AddStr("001");
- one.AddPair("001", p);
+    ComplexOne one;
+    one.AddStr("apple");
+    one.AddStr("banana");
+    one.AddPair("001", p);
 
- json j = one;
- cout << j << endl;  //输出：{"HashNameIndex":{"001":{"Age":18,"Name":"Peter"}},"VStr":["001"]}
- 
- ComplexOne another_one = j;
+    json j = one;
+    cout << j << endl; //输出：{"hash_name_index":{"001":{"Age":18,"Name":"Peter"}},"vstr":["apple","banana"]}
 
- for (auto& v : another_one.GetVStr()) {
-  cout << v << endl;
- }
+    ComplexOne anotherOne = j;
+
+    for (auto& v : anotherOne.GetVStr()) {
+        cout << v << endl;
+    }
 
  return 0;
 }
@@ -337,7 +338,7 @@ int main()
 
 其他的一些用法，比如获得指针或引用，以及二进制压缩等，可以去[官网](https://github.com/nlohmann/json/)查看。
 
-这种万能型数据结构，特别适合做信使，在不同的模块间进行传递，这也是OO编程的利器。
+这种万能型数据结构，特别适合做信使，在不同的模块间进行传递，这也是**OO编程**的利器。
 
 ## 四、json蕴含的OO思想
 
@@ -351,7 +352,7 @@ int main()
 比如可以写如下代码：
 
 ```cpp
-json OOD
+json OOD;
 OOD["Animal"]["Bird"]["Sparrow"] = vector<Sparrow>()
 ```
 
@@ -384,12 +385,11 @@ json empty_array_explicit = json::array();
 json empty_object_implicit = json({});
 json empty_object_explicit = json::object();
 
-
 // a way to express an _array_ of key/value pairs [["currency", "USD"], ["value", 42.99]]
 json array_not_object = json::array({ {"currency", "USD"}, {"value", 42.99} });
 ```
 
-### 序列化/反序列化
+## 序列化/反序列化
 
 ```cpp
 To/from strings
@@ -408,6 +408,10 @@ auto j2 = R"(
     "pi": 3.141
   }
 )"_json;
+
+if (j.at("happy")) {
+    cout << "happy is true" << endl;
+}
 ```
 
 或者使用`json::parse()`明确表达
@@ -448,19 +452,28 @@ auto cpp_string2 = j_string.get<std::string>();
 std::string serialized_string = j_string.dump();
 
 // output of original string
-std::cout << cpp_string << " == " << cpp_string2 << " == " << j_string.get<std::string>() << '\n';
+std::cout << cpp_string << " == " << cpp_string2 << endl;
 
 // output of serialized value
 std::cout << j_string << " == " << serialized_string << std::endl;
 ```
 
-`.dump()`始终返回序列化值，而`.get<std::string>()`返回最初存储的字符串值。
-**请注意，该库仅支持UTF-8。当您在库中存储具有不同编码的字符串时，调用dump()可能会抛出异常。**
+不同之处是：`.dump()`始终返回序列化值，而`.get<std::string>()`返回最初存储的字符串值。
+**请注意，该库仅支持UTF-8，当您在库中存储具有不同编码的字符串时，调用dump()可能会抛出异常。**
 
 ## 二进制格式(CBOR, MessagePack, and UBJSON)
 
-虽然JSON是一种普遍存在的数据格式，但它并不是一种非常紧凑的格式，适用于数据交换，例如通过网络。
-因为，该库支持 [CBOR](http://cbor.io/) (简明二进制对象表示)，[MessagePack](https://msgpack.org/)和 [UBJSON](https://ubjson.org/) (通用二进制规范)以有效地将JSON值编码为字节向量和解码此类向量。
+虽然 JSON 是一种无处不在的数据格式，但它并不是一种适合数据交换（例如通过网络）的那种非常紧凑的格式。
+
+因此，该库支持：
+
+- [BJData](https://json.nlohmann.me/features/binary_formats/bjdata/) (Binary JData),
+- [BSON](https://json.nlohmann.me/features/binary_formats/bson/) (Binary JSON),
+- [CBOR](https://json.nlohmann.me/features/binary_formats/cbor/) (简明二进制对象表示，Concise Binary Object Representation),
+- [MessagePack](https://json.nlohmann.me/features/binary_formats/messagepack/), and
+- [UBJSON](https://json.nlohmann.me/features/binary_formats/ubjson/) (通用二进制规范，Universal Binary JSON)
+
+以有效地将JSON值编码为字节向量（byte vectors ）和解码此类向量（vectors）。
 
 ```cpp
 // create a JSON value
@@ -489,6 +502,8 @@ std::vector<std::uint8_t> v_ubjson = json::to_ubjson(j);
 
 // roundtrip
 json j_from_ubjson = json::from_ubjson(v_ubjson);
+
+//other 
 ```
 
 ## 使用注意事项
@@ -543,19 +558,19 @@ using nlohmann::json;
 
 int main()
 {
-    std::vector <json> alljSon;
+    std::vector <json> allJson;
     std::ifstream i("test.json");
     json j = json::parse(i);
     for (auto it = j.begin(); it != j.end(); ++it)
     {
         if (j.is_array())
         {
-            alljSon.push_back(it.value());
+            allJson.push_back(it.value());
         }
         else
         {
             // If it's not an array, it's an object, and from what I understood you want the key too.
-            alljSon.push_back({it.key(), it.value()});
+            allJson.push_back({it.key(), it.value()});
         }
     }
     return 0;
