@@ -95,7 +95,7 @@ func Add() {
 
 func main() {
 	//HelloGoRoutine()
-	ManyGoWait()
+	//ManyGoWait()
 	//CalSquare()
 	//Add()
 }

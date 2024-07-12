@@ -74,7 +74,17 @@ var (
 )
 ```
 
-变量声明原则
+### 内置函数
+
+1. `close`： 主要用来关闭channel
+2. `len`：   用来求长度，比如string、array、slice、map、channel
+3. `new`：   用来分配内存，主要用来分配值类型，比如int、struct，返回的是指针
+4. `make`：  用来分配内存，主要用来分配引用类型，比如chan、map、slice
+5. `append`：用来追加元素到数组、slice中
+6. `panic` 和`recover` ：用来做错误处理
+
+
+### 变量声明原则
 
 - 聚类
 - 就近
