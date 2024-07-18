@@ -260,21 +260,17 @@ delve(github.com/go-delve/delve)
 
 ## Go 标准库
 
+```sh
 http
-
-bufio
-
 log
-
 encoding/json
-
 regexp
-
 time
-
 strings/math/rand
+```
 
 查看标准库的文档
+
 `godoc -http :8777`
 
 gRPC网关
