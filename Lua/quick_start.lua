@@ -169,3 +169,16 @@ end
 print("--------------------------------- Appendix")
 local string_char = string.char(0x30, 0x31, 0x32, 0x33, 0x00) -- 0x00 ok
 local askii_code = string.byte(string_char, 1)
+
+local function func()
+    local count = 1
+    return function()
+        count = count + 1
+        print(count)
+    end
+end
+local countor = func()
+
+print("--------------------------------- closure")
+print(countor())
+print(countor())
