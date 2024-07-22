@@ -240,3 +240,254 @@ Lambda表达式是`C++11`的内容，在比较低的 Qt版本中，要注意在P
 一个槽也可以响应多个不同的信号，比如点击按钮可以关闭窗口，点击左上角的小叉也可以关闭窗口。
 
 信号和槽之间只要通过connect 函数连接就建立了耦合关系，如果想解除连接可以使用disconnect 函数。
+
+## QT5框架
+
+### 算法头文件
+
+- QtGlobal
+- QtAlgorithms
+
+### 正则表达式
+
+### 工具类
+
+- 字符串类
+  - QString
+    - `+=`的使用
+    - append()
+    - sprintf()
+    - arg()
+    - insert()
+    - prepend()
+    - replace()
+    - trimmed()
+    - simplified()
+    - startsWith()
+    - endsWith()
+    - contains()
+    - 比较
+      - `>,<,>=,<=,==,!=`
+      - localeAwareCompare()
+      - compare()
+    - toInt(); toAscii();toUtf8();...
+    - isNull();isEmpty()
+- 容器类
+  - QList、QLinkList、QVector以及对应的只读迭代器和读写迭代器
+  - QMap、QHash以及对应的只读迭代器和读写迭代器
+  - QVariant
+- QTimer类
+
+### 布局管理
+
+- 分割窗口QSplitter类
+- 停靠窗口QDockWidget类
+- 堆栈窗口QStackedWidget类
+- 基本布局QLayout
+  - QBoxLayout  
+    - QHBoxLayout
+    - QVBoxLayout
+  - QGridLayout
+
+### QT5主窗体
+
+- 主窗体构成基本元素
+  - 菜单栏
+  - 状态栏（一般位于底部）
+  - 工具栏
+  - 锚接部件
+  - 中心不见
+- 文件操作功能
+  - 新建文件
+  - 打开文件
+  - 打印文件
+  - 文本打印
+  - 图像打印
+  - 删除文件
+- 图像坐标变换
+  - 缩放功能
+    - 缩小ShowZoomIn();
+    - 放大ShowZoomOut();
+  - 旋转功能
+    - 90:ShowRotate90();
+    - 180:ShowRotate180();
+    - 270:ShowRotate270();
+  - 镜像功能
+    - 水平：ShowMirrorHorizontal();
+    - 垂直：ShowMirrrorHorizontal();
+- 文本编辑功能
+  - 设置字体
+  - 设置字号
+  - 设置文字加粗
+  - 设置字体倾斜
+  - 文字加下画线
+  - 设置文字颜色
+  - 设置字符格式
+- 排版功能
+  - 左对齐
+  - 右对齐
+  - 居中
+  - 两端对齐
+  - 段落对齐
+  - 缩进
+
+### 图形视图框架
+
+- 图形视图体系结构Graphics View
+  - 场景类QGraphicsScene,用于放置图元的容器，通过视图类和外界交互
+  - 坐标原点在场景的正中心
+  - 视图类QGraphiceView
+  - 坐标原点在视图的左上角
+  - 图元类QGraphicsItem
+  - 坐标原点在图元中心
+  - 直线QGraphicsLineItem
+  - 椭圆QGraphicsEllipseItem
+  - 文本图元QGraphicsTextItem
+  - 矩形QGraphicsRectItem
+
+### 文件和磁盘处理
+
+- QFile类读写文件
+- QTextStream类读写文件
+- QDataStream类读写二进制文件
+- QDir操作目录
+- QFileInfo获取文件信息
+- QFileSystemWatcher监视文件和目录变化
+
+### 事件处理
+
+- 鼠标事件
+- 键盘事件
+- 事件过滤器
+
+### 数据库
+
+### 控件QWidget
+
+- 按钮组
+  - Push Button按钮QPushButton
+  - Tool Button工具按钮
+  - Radio Button单选按钮
+  - Check Button复选按钮
+  - Command Link Button命令链接按钮
+  - Button Box按钮盒
+- 输入控件组
+  - Combo Box组合框
+  - Font Combo Box字体组合框
+  - Line Edit行编辑
+  - Text Edit文本编辑（多用于显示）
+  - Plain Text Edit纯文本编辑（多用于处理）
+  - Spin Box数字显示框（自旋盒）（显示整数）
+  - Double Spin Box双自旋盒（显示小数）
+  - Time Edit时间编辑
+  - Date Edit日期编辑
+  - Date/Time Edit时间
+  - Dial拨号
+  - Horizontal Scroll Bar横向滚动条
+  - Vertical Scroll Bar垂直滚动条
+  - Horizontal Slider横向滑块
+  - Vertical Slider垂直滑块
+- 显示控件组
+  - Label标签
+  - Text Browser文本浏览器（只读）
+  - Graphics View图形视图
+  - Calendar日历
+  - LCD Number液晶数字
+  - Progress Bar进度条
+  - Horizontal Line水平线
+  - Vertical Line垂直线
+  - QDeclarativeView向QML暴露数据视图
+  - QWebView：Web视图
+- 空间间隔组（布局用于间隔控件）
+  - Horizontal Spacer水平间隔
+  - Vertical Spacer垂直间隔
+- 布局管理组
+  - Vertical Layout垂直布局
+  - Horizontal Layout水平布局
+  - Grid Layout网格布局
+  - Form Layout表格布局
+- 容器组
+  - Group Box组框
+  - Scroll Area滚动区域
+  - Tool Box工具箱
+  - Tab Widget标签小部件
+  - Stacked Widget堆叠部件
+  - Frame帧
+  - Widget小部件
+  - MdiArea:MDI区域（多文档界面）
+  - Dock Widget停靠窗口部件
+  - QAx Widget封装Flash的ActiveX控件
+- 项目视图组
+  - List View清单视图
+  - Tree View树视图
+  - Table View表视图
+  - Column View列视图
+- 项目控件组
+  - List Widget清单控件
+  - Tree Widget树形控件
+  - Table Widget表控件
+
+### 基本对话框
+
+- QFileDialog标准文件对话框
+- QColorDialog标准颜色对话框
+- QFontDialog标准字体对话框
+- QInputDialog标准输入对话框
+  - getText();标准字符串输入对话框
+  - getItem();标准条目选择对话框
+  - getInt();标准int类型输入对话框
+  - getDouble();标准double类型输入对话框
+- QMessageBox消息对话框
+  - question消息框
+  - information消息框
+  - warning消息框
+  - critical消息框
+  - about消息框
+  - about QT消息框
+- QToolBox工具盒类
+- 进度条
+  - QProgressBar进度条
+  - QProgressDialog进度框
+- 调色板QPalette
+  - ColorGroup
+  - ColorRole
+- 电子钟QTime
+- 可扩展对话框setSizeConstraint();
+- 不规则窗体ShapeWidget和setMask();
+- 程序启动画面QSplashScreen
+
+### 图形与图片
+
+### 模型/视图结构
+
+- MVC模式
+  - 数据的模型Model
+  - 用户界面的视图View
+  - 操作控制Controller
+- InterView框架(通过信号和槽通讯)
+  - QAbstractItemModel数据的模型Model
+  - QAbstractView用户界面的视图View
+  - QAbstractItemDelegate代理Delegate
+
+### 网络与通信
+
+- UDP
+- TCP
+- 获取本机网络信息
+  - QHostInfo
+  - QNetworkInterface
+  - QNetworkAddressEntry
+
+### 多线程
+
+- 同步和互斥
+  - QMutex
+  - QMutexLocker
+  - QReadWriteLocker
+  - QReadLocker
+  - QWriteLocker
+  - QSemaphore
+  - QWaitCondition
+- 线程的等待和唤醒QWaitCondition
+  
+### 单元测试框架QTestLib
