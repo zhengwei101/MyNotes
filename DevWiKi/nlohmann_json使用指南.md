@@ -11,6 +11,8 @@
 
 到底有没有这么好，读完本专题你就知道了。
 
+## JSON简介
+
 关于JSON(JavaSrcipt Object Notation)的详细格式可以参考[官网](https://www.json.org/)，十分简短明了。
 这里就举几个例子帮助理解。
 
@@ -585,7 +587,7 @@ int main()
 > By default, the library does not preserve the insertion order of object elements. This is standards-compliant, as the JSON standard defines objects as "an unordered collection of zero or more name/value pairs". If you do want to preserve the insertion order, you can specialize the object type with containers like tsl::ordered_map (integration) or nlohmann::fifo_map (integration).
 
 这段话的意思是JSON标准的定义是零个或多个键值对对的无序集合，如果要保证插入顺序，可以使用`tsl::ordered_map(integration)`或`nlohmann::fifo_map(integration)`等容器专门化对象类型。
-`nlohmann::fifo_map`同样在github上找到，“专门化对象类型”的意思是`nlohmann/json`组件内部用到了很多`std`容器，只需要将其替换成可以保存插入顺序的容器就可以了，也就是`nlohmann::fifo_map`。
+`nlohmann::fifo_map`同样在github上找到，“专门化对象类型”的意思是`nlohmann/json`组件内部用到了很多`std`容器，只需要将其替换成可以保存插入顺序的容器就可以了，也就是[nlohmann::fifo_map](https://github.com/nlohmann/fifo_map)。
 
 重新找了一些英文资料，最终找到的解决方案如下：
 
@@ -630,10 +632,11 @@ int main()
 
 运行后，可以看到输出的JSON不再是字符串顺序而是插入顺序.
 
-### 使用`nlohmann::json`的开源库
+## 使用`nlohmann::json`的开源库
 
 1. JsonRpcCXX
 
-### 参考资料
+## 参考资料
 
+[(译) JSON-RPC 2.0 规范(中文版)](https://wiki.geekdream.com/Specification/json-rpc_2.0.html)
 <https://dins.site/coding-lib-json-intro-chs/>
