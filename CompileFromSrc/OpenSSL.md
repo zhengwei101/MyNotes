@@ -5,11 +5,13 @@
 前往[Strawberry Perl](http://strawberryperl.com/)官网下载并安装 Strawberry Perl 这里选择的是目前最新版本 Strawberry Perl 5.38.2.2安装过程中务必选择完整安装 安装完成之后会自动添加环境变量，无需手动添加。
 
 检查是否已安装
+
 ```bash
 perl -v
 ```
 
 ## 下载源代码
+
 前往[OpenSLL](https://www.openssl.org/source/)官网下载 openssl-3.0.13.tar.gz 并解压
 
 ## 启动命令行提示工具
@@ -34,10 +36,13 @@ perl Configure VC-WIN64A no-asm
 ```
 
 如果编译静态链接版本的二进制程序，加一个 no-shared 选项即可。
+
 ```bash
 perl Configure VC-WIN64A no-asm no-shared
 ```
+
 若想要自定义安装路径，添加 --prefix 选项即可
+
 ```bash
 perl Configure VC-WIN64A no-asm --prefix=D:\OpenSSL\3.0.13
 

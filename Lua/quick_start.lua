@@ -61,21 +61,21 @@ end
 a, b = fun2(314, 3.14)
 
 -- 数组
+function operateTable()
+    local tab = {1, 2, 3, 4, 5, 6, 7, 8, 9, "ac", {}, function() end}
+    print(tab[1]) -- starts from 1
+    print(tab[100]) -- nil
+    tab[100] = 123  -- add new
+    local length_of_tab = #tab  -- length
+    print(length_of_tab)
+    table.insert(tab, "insert to tail")
+    table.insert(tab, 2, "insert to second")
+    local removed = table.remove(tab, 1)
+    print(removed)
+end
+
 print("--------------------------------- table number_index")
-tab = {1, 2, 3, 4, 5, 6, 7, 8, 9, "ac", {}, function() end}
-print(tab[1]) -- starts from 1
-
-print(tab[100]) -- nil
-tab[100] = 123 -- add new
-
-
-local length_of_tab = #tab -- length
-
-table.insert(tab, "insert to tail")
-table.insert(tab, 2, "insert to second")
-
-local removed = table.remove(tab, 1)
-
+operateTable()
 
 print("--------------------------------- table string_index")
 person = {

@@ -1,6 +1,5 @@
 # 授权方案
 
-
 1. 获取硬件信息
 2. 根据硬件信息生成唯一序列号
 3. 根据序列号和用户名（用户邮箱地址）生成license
@@ -16,11 +15,13 @@ license 包括唯一序列号，邮箱地址，时间戳（时间戳可以记录
 公钥用于加密授权码，而私钥用于解密授权码。这种方法确保了授权码的安全性，因为只有拥有私钥的人才能解密授权码并验证其合法性。密钥生成器通常会使用高随机性的算法，以确保生成的密钥难以预测和复制。
 
 ## 原理
+
 1. 生成密钥对，包含私钥和公钥
 2. 授权者保留私钥，使用私钥对授权信息诸如使用截止日期，MAC地址等内容生成license签名证书。
 3. 公钥给使用者，放在代码中，用于验证license签名证书是否符合使用条件。
 
 ## License证书：
+
 根据客户服务器硬件信息（MAC地址、IP地址、CPU序列号、主板序列号）生成授权证书，同时可以给授权证书设置生效时间与失效时间。
 
 cadtest.lic
@@ -32,6 +33,7 @@ cadtest.lic
 后续当再次启动时，重新发送这数据，如果其中只有某几项发生变化，那仍然可以匹配到原有设备（也就是召回）。
 
 1. 先获取硬件信息
+
 ```json
 {
 "ipAddress": [ //授权的ip列表
@@ -45,7 +47,9 @@ cadtest.lic
 }
 
 ```
+
 入参传入授权信息：
+
 ```json
 {
 
@@ -72,6 +76,7 @@ cadtest.lic
 ```
 
 授权验证（license-verify-starter）
+
 ```json
 license.subject: pushi-kn-graph
 license.publicAlias: SYSHLANG
@@ -83,19 +88,18 @@ license.publicKeysStorePath: /Users/sixj/Desktop/license/publicCerts.keystore
 项目启动的时候，会去验证授权证书的有效性，是否在有效期内，硬件信息是否匹配，如果授权证书无效，项目启动失败。
 另外可以在一些核心接口，比如登陆接口，添加@License注解，请求该接口的时候，也会去验证授权证书的有效性，比如验证证书是否到期，如果失效，该接口将会拒绝访问。
 
-
 生成一个唯一序列号：
 3ZGRUS-4LYXRU-7V8MF6-GC75HM
 
-
 ## 参考
-https://github.com/sixj0/license
-https://github.com/postbird/Postbird_License
-https://github.com/denisbrodbeck/machineid
-https://juejin.cn/post/6864739866979434503
-https://blog.csdn.net/laoyang360/article/details/50966707
-https://www.cnblogs.com/lidabo/p/17407712.html
-https://www.cnblogs.com/chenshikun/p/16860067.html
-https://github.com/postbird/Postbird_License
-https://blog.csdn.net/daocaokafei/article/details/136243120
-https://www.jiandaoyun.com/blog/article/436449/
+
+<https://github.com/sixj0/license>
+<https://github.com/postbird/Postbird_License>
+<https://github.com/denisbrodbeck/machineid>
+<https://juejin.cn/post/6864739866979434503>
+<https://blog.csdn.net/laoyang360/article/details/50966707>
+<https://www.cnblogs.com/lidabo/p/17407712.html>
+<https://www.cnblogs.com/chenshikun/p/16860067.html>
+<https://github.com/postbird/Postbird_License>
+<https://blog.csdn.net/daocaokafei/article/details/136243120>
+<https://www.jiandaoyun.com/blog/article/436449/>
