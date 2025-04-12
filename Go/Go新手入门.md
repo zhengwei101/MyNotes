@@ -18,6 +18,26 @@ https://gitpod.io/#github项目地址
 
 ## 基本方法
 
+声明包
+```go
+package main
+
+```
+main包是go可执行程序的入口包，一个go语言程序必须有且仅有一个main包。
+
+`main()`函数是Go程序的入口函数，只能在main包中声明main()函数，不能在其他包中声明该函数。
+
+导入包
+`import "package_name"`
+
+`package_name` 是导入包的包名
+
+```go
+import (
+	"os"
+	"fmt"
+)
+```
 变量声明
 
 ```go
@@ -154,6 +174,7 @@ Don't communicate by sharing memory; share memory by communicating.
 
 Go语言中的引用类数据类型有func, interface, slice, map, chan, *Type
 
+一些常见的逃逸场景
 - 一个值被分享到函数栈帧范围之外
 - 在for循环外声明，在for循环内分配，同理闭包
 - 发送指针或者带有指针的值到channel中
@@ -167,10 +188,13 @@ Go语言中的引用类数据类型有func, interface, slice, map, chan, *Type
 go build -gcflags '-m -l' main.go
 ```
 
-其中 -gcflags 参数于启用编译器支持的额外标志。例如， -m 用于输出编译器的优化细节，相反可以使用-N来关闭编译器优化。而-l则用于禁用foo函数的内联优化，防止逃逸被编译器通过内联彻底的抹除。
+其中 -gcflags 参数于启用编译器支持的额外标志。
 
-使用反汇编命令也可以看出变量是否发生了逃逸
+例如， -m 用于输出编译器的优化细节，相反可以使用-N来关闭编译器优化。
 
+而-l则用于禁用foo函数的内联优化，防止逃逸被编译器通过内联彻底的抹除。
+
+使用反汇编命令也可以看出变量是否发生了逃逸：
 ```sh
 go tool compile -S main.go
 ```
