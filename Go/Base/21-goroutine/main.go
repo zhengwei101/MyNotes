@@ -19,7 +19,7 @@ func HelloGoRoutine() {
 	time.Sleep(time.Second)
 }
 
-// 通过waitgroup实现协程的阻塞
+// ManyGoWait 通过WaitGroup实现协程的阻塞
 // 首先通过Add方法，对计数器+5
 // 然后开启协程，每个协程执行完后，通过Done对计数器减少1
 // 最后Wait阻塞主协程

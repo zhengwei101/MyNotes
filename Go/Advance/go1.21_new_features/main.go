@@ -7,7 +7,7 @@ import (
 	"slices"
 )
 
-// 内置了min,max,clear函数
+// BuiltInFunction 内置了min,max,clear函数
 func BuiltInFunction() {
 	fmt.Printf("最小:%d,最大:%d\n", min(1, 4, 7, 5, 2), max(1, 4, 7, 5, 2))
 	list := []int{1, 2, 3}
@@ -18,12 +18,12 @@ func BuiltInFunction() {
 	fmt.Println(mp)
 }
 
-// structured log
+// Slog structured log
 func Slog() {
 	slog.Log(context.Background(), slog.LevelInfo, "user info is: ", "姓名", "哪吒", "年龄", 6)
 }
 
-// slices
+// Collection slices
 func Collection() {
 	list := []int{1, 3, 2}
 	fmt.Printf("最大值: %d\n", slices.Max(list))

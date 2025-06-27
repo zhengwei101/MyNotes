@@ -5,7 +5,7 @@ import (
 )
 
 func count() int {
-	fmt.Println("count.")
+	fmt.Println("count:")
 	return 3
 }
 
@@ -50,6 +50,7 @@ func main() {
 
 	//在迭代遍历时，for...range 返回索引、键值数据
 	//for...range支持字符串、数组、数组指针、切片、字典、通道类型
+	println("***for...range***")
 	x := []int{100, 200, 300}
 	for i, n := range x {
 		println(i, ":", n)
@@ -110,6 +111,7 @@ func main() {
 	}
 
 	//配合标签，break和continue可在多层嵌套中指定目标层级
+	println("***for...break...continue***")
 	{
 	outer:
 		for x := 0; i < 5; x++ {
